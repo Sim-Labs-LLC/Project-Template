@@ -9,6 +9,7 @@ import '@typechain/hardhat';
 import 'hardhat-gas-reporter';
 import 'solidity-coverage';
 import CollectionConfig from './config/CollectionConfig';
+import "hardhat-gas-reporter";
 
 dotenv.config();
 
