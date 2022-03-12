@@ -36,7 +36,7 @@ task('generate-root-hash', 'Generates and prints out the root hash for the curre
   console.log('The Merkle Tree root hash for the current whitelist is: ' + rootHash);
 });
 
-task('generate-proof', 'Generates and prints out the whitelist proof for the given address (compatible with Etherscan)', async (taskArgs: {address: string}) => {
+task('generate-proof', 'Generates and prints out the whitelist proof for the given address (compatible with block explorers such as Etherscan)', async (taskArgs: {address: string}) => {
   // Check configuration
   if (CollectionConfig.whitelistAddresses.length < 1) {
     throw 'The whitelist is empty, please add some addresses to the configuration.';
@@ -52,6 +52,11 @@ task('generate-proof', 'Generates and prints out the whitelist proof for the giv
 .addPositionalParam('address', 'The public address');
 
 task('rename-contract', 'Renames the smart contract replacing all occurrences in source files', async (taskArgs: {newName: string}, hre) => {
+  // Validate new name
+  if (!/^([A-Z][A-Za-z0-9]+)$/.test(taskArgs.newName)) {
+    throw 'The contract name must be in PascalCase: https://en.wikipedia.org/wiki/Camel_case#Variations_and_synonyms';
+  }
+
   const oldContractFile = `${__dirname}/contracts/${CollectionConfig.contractName}.sol`;
   const newContractFile = `${__dirname}/contracts/${taskArgs.newName}.sol`;
 
@@ -93,6 +98,10 @@ const config: HardhatUserConfig = {
     },
   },
   networks: {
+    truffle: {
+      url: 'http://localhost:24012/rpc',
+      timeout: 60000,
+    },
   },
   gasReporter: {
     enabled: process.env.REPORT_GAS !== undefined,
@@ -100,19 +109,23 @@ const config: HardhatUserConfig = {
     coinmarketcap: process.env.GAS_REPORTER_COIN_MARKET_CAP_API_KEY,
   },
   etherscan: {
-    apiKey: process.env.ETHERSCAN_API_KEY,
+    apiKey: {
+      // Ethereum
+      rinkeby: process.env.BLOCK_EXPLORER_API_KEY,
+      mainnet: process.env.BLOCK_EXPLORER_API_KEY,
+    },
   },
 };
 
-// Setup Rinkeby network
-if (process.env.NETWORK_RINKEBY_URL !== undefined) {
-  config.networks!.rinkeby = {
-    url: process.env.NETWORK_RINKEBY_URL,
-    accounts: [process.env.NETWORK_RINKEBY_PRIVATE_KEY!],
+// Setup "testnet" network
+if (process.env.NETWORK_TESTNET_URL !== undefined) {
+  config.networks!.testnet = {
+    url: process.env.NETWORK_TESTNET_URL,
+    accounts: [process.env.NETWORK_TESTNET_PRIVATE_KEY!],
   };
 }
 
-// Setup Ethereum network
+// Setup "mainnet" network
 if (process.env.NETWORK_MAINNET_URL !== undefined) {
   config.networks!.mainnet = {
     url: process.env.NETWORK_MAINNET_URL,
