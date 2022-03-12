@@ -1,5 +1,5 @@
 {
-    "name": "@sim-labs/nft-erc721-collection-dapp",
+    "name": "@sim-labs/project-template-minting-dapp",
     "version": "1.0.0",
     "devDependencies": {
         "@babel/preset-react": "^7.0.0",
