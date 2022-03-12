@@ -1,4 +1,4 @@
-# NFT ERC721 Collection
+# Sim Labs NFT Collection Template
 
 An all-in-one solution for `ERC721` collections. Build, test and deploy your smart contract, together with a totally
 integrated DAPP within a simple yet powerful workspace.
@@ -15,10 +15,6 @@ This project was created for educational purposes, please refer to the [LICENCE]
 - includes a fully-featured minting DAPP (React + TypeScript + SCSS + Webpack)
 - full support for contract interaction through block explorers (e.g. Etherscan), for all the users that do not trust custom DAPPs (including the `whitelistMint(...)` function)
 - customizable minting DAPP (from basic branding to complete customization)
-
-## YouTube tutorials
-- Deploy an NFT collection in 5 Min: https://youtu.be/ynZzPNkS1nk
-- _More videos coming soon..._
 
 ## Requirements
 
